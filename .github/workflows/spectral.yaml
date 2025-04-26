@@ -32,13 +32,13 @@ jobs:
       - name: Spectral Linting
         id: spectral-lint
         run: |
-          output=$(docker run --rm \
+          echo -e "$(docker run --rm \
           --volume ${{ github.workspace }}:${{ github.workspace }} \
           --workdir ${{ github.workspace }} \
           --attach stdout \
           stoplight/spectral:latest \
-          lint ./root.oas.yaml) \
-          && echo "$output" >> $GITHUB_OUTPUT
+          lint ./root.oas.yaml)" \
+          >> $GITHUB_OUTPUT
 
 
       - name: Add annotations
