@@ -26,11 +26,7 @@ jobs:
             image: stoplight/spectral:latest
             options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
             run: |
-                {
-                    echo 'linting_output<<EOF'
-                    spectral lint ./root.oas.yaml 
-                    echo EOF
-                } >> $GITHUB_OUTPUT
+                spectral lint ./root.oas.yaml >> $GITHUB_OUTPUT
             # --ruleset ./docs/spectral/bundled.spectral.yml ./docs/specification/*.yaml
 
       - name: Add annotations
