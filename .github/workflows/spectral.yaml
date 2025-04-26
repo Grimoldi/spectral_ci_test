@@ -33,15 +33,10 @@ jobs:
     - name: Job summary          
       run: |
         ANNOTATIONS="${{ steps.spectral-lint.outputs.linting-result }}"
-        # echo "$ANNOTATIONS" >> "$GITHUB_ENV"
 
         WARNNR=$(echo "$ANNOTATIONS" | grep warning | wc -l)
-        # echo "$WARNNR"
-        # echo "WARNNR=$WARNNR" >> "$GITHUB_ENV"
 
         ERRNR=$(echo "$ANNOTATIONS" | grep error | wc -l)
-        # echo "$ERRNR"
-        # echo "ERRNR=$ERRNR" >> "$GITHUB_ENV"
 
         ANNOTATIONLINES=$(echo "$ANNOTATIONS" | wc -l)
         if [ "$ANNOTATIONLINES" -eq 0 ]; then
@@ -49,13 +44,26 @@ jobs:
         else
             ICON=":red_circle:"
         fi
-        # echo "$ICON"
-        # echo "$ICON" >> "$GITHUB_ENV"
 
         echo "### Spectral OAS analysis recap" >> $GITHUB_STEP_SUMMARY
-        echo "| Test result | Warning | ERRNR |" >> $GITHUB_STEP_SUMMARY
+        echo "| Test result | Warnings | Errors |" >> $GITHUB_STEP_SUMMARY
         echo "| --- | --- | --- |" >> $GITHUB_STEP_SUMMARY
         echo "| ${ICON} | ${WARNNR} | ${ERRNR} |" >> $GITHUB_STEP_SUMMARY
+
+    - name: Stylish job summary
+      run: |
+        {
+            echo 'linting-result<<EOF'
+            echo -e "$(docker run --rm \
+            --volume ${{ github.workspace }}:${{ github.workspace }} \
+            --workdir ${{ github.workspace }} \
+            --attach stdout \
+            stoplight/spectral:latest \
+            lint ./root.oas.yaml --format stylish)"
+            echo ""
+            echo "EOF"
+        } >> $GITHUB_STEP_SUMMARY
+        
 
     - name: Action return code
       run: |
