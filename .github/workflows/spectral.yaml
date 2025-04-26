@@ -36,7 +36,7 @@ jobs:
             # random EOF
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             echo 'linting-result<<$EOF'
-            echo -e "linting-result=$(docker run --rm \
+            echo -e "$(docker run --rm \
             --volume ${{ github.workspace }}:${{ github.workspace }} \
             --workdir ${{ github.workspace }} \
             --attach stdout \
