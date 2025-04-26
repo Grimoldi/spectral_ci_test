@@ -53,15 +53,14 @@ jobs:
     - name: Stylish job summary
       run: |
         {
-            echo 'linting-result<<EOF'
             echo -e "$(docker run --rm \
             --volume ${{ github.workspace }}:${{ github.workspace }} \
             --workdir ${{ github.workspace }} \
             --attach stdout \
             stoplight/spectral:latest \
-            lint ./root.oas.yaml --format stylish)"
-            echo ""
-            echo "EOF"
+            lint ./root.oas.yaml --format stylish)" \
+            | sed 's/warning/:warning:/' \
+            | sed 's/error/:heavy_exclamation_mark:/'
         } >> $GITHUB_STEP_SUMMARY
         
 
