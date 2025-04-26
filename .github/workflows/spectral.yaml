@@ -34,12 +34,15 @@ jobs:
       run: |
         ANNOTATIONS="${{ steps.spectral-lint.outputs.linting-result }}"
         echo "$ANNOTATIONS" >> "$GITHUB_ENV"
+        echo "$ANNOTATIONS"
 
         WARNINGS=(echo "$ANNOTATIONS" | grep warning | wc -l)
         echo "$WARNINGS" >> "$GITHUB_ENV"
+        echo "$WARNINGS"
 
         ERRORS=$(echo "$ANNOTATIONS" | grep error | wc -l)
         echo "$ERRORS" >> "$GITHUB_ENV"
+        echo "$ERRORS"
 
         ANNOTATIONLINES=(echo "$ANNOTATIONS" | wc -l)
         if [ "ANNOTATIONLINES" -eq "0" ]; then
@@ -47,6 +50,7 @@ jobs:
         else
             ICON=":red_circle:"
         echo "$ICON" >> "$GITHUB_ENV"
+        echo "$ICON"
 
         echo "### Spectral OAS analysis recap" >> $GITHUB_STEP_SUMMARY
         echo "| Test result | Warning | Errors |" >> $GITHUB_STEP_SUMMARY
