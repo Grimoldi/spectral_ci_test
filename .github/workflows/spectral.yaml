@@ -39,23 +39,23 @@ jobs:
                 --workdir ${{ github.workspace }} \
                 --attach stdout \
                 stoplight/spectral:latest \
-                lint ./root.oas.yaml --format json)"
+                lint ./root.oas.yaml --format github-actions)"
                 echo ""
                 echo "EOF"
             } >> $GITHUB_OUTPUT
 
-      - name: Extract fields for annotations
-        id: extract-fields
-        run: |
-            {
-                echo 'jq-result<<EOF'
-                echo -e "${{ steps.spectral-lint.outputs.linting-result }}" \
-                | jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r
-                echo ""
-                echo "EOF"
-            } >> $GITHUB_OUTPUT
+      # - name: Extract fields for annotations
+      #   id: extract-fields
+      #   run: |
+      #       {
+      #           echo 'jq-result<<EOF'
+      #           echo -e "${{ steps.spectral-lint.outputs.linting-result }}" \
+      #           | jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r
+      #           echo ""
+      #           echo "EOF"
+      #       } >> $GITHUB_OUTPUT
 
-      - name: Test final result
-        run: |
-          echo "${{ steps.extract-fields.outputs.jq-result }}"
+      # - name: Test final result
+      #   run: |
+      #     echo "${{ steps.extract-fields.outputs.jq-result }}"
             
