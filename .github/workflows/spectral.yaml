@@ -50,7 +50,7 @@ jobs:
             {
             echo 'jq-result<<EOF'
             echo -e "${{ steps.spectral-lint.outputs.linting-result }}" \
-            | jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r >> $GITHUB_OUTPUT
+            | jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r
             echo ""
             echo "EOF"
             } >> $GITHUB_OUTPUT
