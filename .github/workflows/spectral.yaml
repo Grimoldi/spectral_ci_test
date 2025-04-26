@@ -54,8 +54,8 @@ jobs:
       run: |
         {
             echo -e "$(docker run --rm \
-            --volume ${{ github.workspace }}:${{ github.workspace }} \
-            --workdir ${{ github.workspace }} \
+            --volume ${{ github.workspace }}:/oas-docs \
+            --workdir /oas-docs \
             --attach stdout \
             stoplight/spectral:latest \
             lint ./root.oas.yaml --format stylish)" \
