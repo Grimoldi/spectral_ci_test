@@ -37,9 +37,7 @@ jobs:
           --workdir ${{ github.workspace }} \
           --attach stdout \
           stoplight/spectral:latest \
-          lint ./root.oas.yaml)"
-
-
+          lint ./root.oas.yaml)" >> $GITHUB_OUTPUT
 
       - name: Add annotations
         run: |
