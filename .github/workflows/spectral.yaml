@@ -35,7 +35,7 @@ jobs:
           docker run --rm \
           -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} \
           stoplight/spectral:latest \
-          'lint ./root.oas.yaml' >> $GITHUB_OUTPUT
+          lint './root.oas.yaml' >> $GITHUB_OUTPUT
 
       - name: Add annotations
         run: |
