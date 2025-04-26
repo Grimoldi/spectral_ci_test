@@ -5,6 +5,9 @@ on:
       branches:
         - main
 
+permissions:
+  checks: write
+
 jobs:
   build:
     name: Run Spectral
@@ -15,5 +18,3 @@ jobs:
 
       # Run Spectral
       - uses: stoplightio/spectral-action@latest
-        with:
-          file_glob: './*.yaml'
