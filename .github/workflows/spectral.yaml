@@ -17,4 +17,11 @@ jobs:
       - uses: actions/checkout@v3
 
       # Run Spectral
-      - uses: stoplightio/spectral-action@latest
+      # - uses: stoplightio/spectral-action@latest
+
+      - name: Run Spectral Lint
+        uses: addnab/docker-run-action@v3
+        with:
+            image: stoplight/spectral:latest
+            options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
+            run: spectral lint # --ruleset ./docs/spectral/bundled.spectral.yml ./docs/specification/*.yaml
