@@ -13,21 +13,7 @@ jobs:
     name: Run Spectral
     runs-on: ubuntu-latest
     steps:
-      # Check out the repository
       - uses: actions/checkout@v3
-
-      # Run Spectral
-      # - uses: stoplightio/spectral-action@latest
-
-      
-      # - name: Run Spectral Lint
-      #   id: spectral-lint
-      #   uses: addnab/docker-run-action@v3
-      #   with:
-      #       image: stoplight/spectral:latest
-      #       options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
-      #       run: spectral lint ./root.oas.yaml >> $GITHUB_OUTPUT
-      #       # --ruleset ./docs/spectral/bundled.spectral.yml ./docs/specification/*.yaml
 
       - name: Spectral Linting
         id: spectral-lint
@@ -44,18 +30,12 @@ jobs:
                 echo "EOF"
             } >> $GITHUB_OUTPUT
 
-      # - name: Extract fields for annotations
-      #   id: extract-fields
-      #   run: |
-      #       {
-      #           echo 'jq-result<<EOF'
-      #           echo -e "${{ steps.spectral-lint.outputs.linting-result }}" \
-      #           | jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r
-      #           echo ""
-      #           echo "EOF"
-      #       } >> $GITHUB_OUTPUT
-
-      - name: Test final result
+      - name: Action return code
         run: |
-          echo "${{ steps.spectral-lint.outputs.linting-result }}"
-            
+          errors="${{ steps.spectral-lint.outputs.linting-result }}"
+          if [ -z "$errors" ]; then
+            echo "$errors"
+            exit 1
+          else
+            exit 0
+          fi
