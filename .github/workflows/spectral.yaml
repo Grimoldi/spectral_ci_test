@@ -55,7 +55,7 @@ jobs:
       #           echo "EOF"
       #       } >> $GITHUB_OUTPUT
 
-      # - name: Test final result
-      #   run: |
-      #     echo "${{ steps.extract-fields.outputs.jq-result }}"
+      - name: Test final result
+        run: |
+          echo "${{ steps.spectral-lint.outputs.linting-result }}"
             
