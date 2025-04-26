@@ -36,15 +36,15 @@ jobs:
         echo "$ANNOTATIONS" >> "$GITHUB_ENV"
         echo "$ANNOTATIONS"
 
-        WARNINGS=(echo "$ANNOTATIONS" | grep warning | wc -l)
+        WARNINGS=$(echo "$ANNOTATIONS" | grep warning | wc -l)
         echo "$WARNINGS" >> "$GITHUB_ENV"
         echo "$WARNINGS"
 
-        ERRORS=$(echo "$ANNOTATIONS" | grep error | wc -l)
+        ERRORS=$$(echo "$ANNOTATIONS" | grep error | wc -l)
         echo "$ERRORS" >> "$GITHUB_ENV"
         echo "$ERRORS"
 
-        ANNOTATIONLINES=(echo "$ANNOTATIONS" | wc -l)
+        ANNOTATIONLINES=$(echo "$ANNOTATIONS" | wc -l)
         if [ "ANNOTATIONLINES" -eq "0" ]; then
             ICON=":white_check_mark:"
         else
