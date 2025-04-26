@@ -35,13 +35,13 @@ jobs:
             # random EOF
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             {
-                echo 'linting-result<<$EOF' >> $GITHUB_OUTPUT
+                echo 'linting-result<<$EOF'
                 echo -e "$(docker run --rm \
                 --volume ${{ github.workspace }}:${{ github.workspace }} \
                 --workdir ${{ github.workspace }} \
                 --attach stdout \
                 stoplight/spectral:latest \
-                lint ./root.oas.yaml)\n" >> $GITHUB_OUTPUT
+                lint ./root.oas.yaml)\n"
                 echo "$EOF"
             } >> $GITHUB_OUTPUT
 
