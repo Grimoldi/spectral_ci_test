@@ -40,7 +40,8 @@ jobs:
                 --attach stdout \
                 stoplight/spectral:latest \
                 lint ./root.oas.yaml) --format json"
-                echo "\nEOF"
+                echo ""
+                echo "EOF"
             } >> $GITHUB_OUTPUT
 
       - name: Extract fields for annotations
@@ -50,7 +51,8 @@ jobs:
             echo 'js-result<<EOF'
             echo -e "${{ steps.spectral-lint.outputs.linting-result }}" \
             jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r >> $GITHUB_OUTPUT
-            echo "\nEOF"
+            echo ""
+            echo "EOF"
             }
 
       - name: Test final result
