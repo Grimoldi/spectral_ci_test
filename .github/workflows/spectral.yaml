@@ -34,14 +34,16 @@ jobs:
         run: |
             # random EOF
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-            echo 'linting-result<<$EOF' >> $GITHUB_OUTPUT
-            echo -e "$(docker run --rm \
-            --volume ${{ github.workspace }}:${{ github.workspace }} \
-            --workdir ${{ github.workspace }} \
-            --attach stdout \
-            stoplight/spectral:latest \
-            lint ./root.oas.yaml)" >> $GITHUB_OUTPUT
-            echo "$EOF" >> $GITHUB_OUTPUT
+            {
+                echo 'linting-result<<$EOF' >> $GITHUB_OUTPUT
+                echo -e "$(docker run --rm \
+                --volume ${{ github.workspace }}:${{ github.workspace }} \
+                --workdir ${{ github.workspace }} \
+                --attach stdout \
+                stoplight/spectral:latest \
+                lint ./root.oas.yaml)\n" >> $GITHUB_OUTPUT
+                echo "$EOF"
+            } >> $GITHUB_OUTPUT
 
       - name: Add annotations
         run: |
