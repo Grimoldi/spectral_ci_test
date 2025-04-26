@@ -40,7 +40,7 @@ jobs:
         echo "$WARNINGS" >> "$GITHUB_ENV"
         echo "$WARNINGS"
 
-        ERRORS=$$(echo "$ANNOTATIONS" | grep error | wc -l)
+        ERRORS=$(echo "$ANNOTATIONS" | grep error | wc -l)
         echo "$ERRORS" >> "$GITHUB_ENV"
         echo "$ERRORS"
 
