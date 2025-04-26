@@ -24,4 +24,5 @@ jobs:
         with:
             image: stoplight/spectral:latest
             options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
-            run: spectral lint # --ruleset ./docs/spectral/bundled.spectral.yml ./docs/specification/*.yaml
+            run: spectral lint ./root.oas.yaml
+            # --ruleset ./docs/spectral/bundled.spectral.yml ./docs/specification/*.yaml
