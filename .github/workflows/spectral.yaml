@@ -48,12 +48,12 @@ jobs:
         id: extract-fields
         run: |
             {
-            echo 'js-result<<EOF'
+            echo 'jq-result<<EOF'
             echo -e "${{ steps.spectral-lint.outputs.linting-result }}" \
-            jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r >> $GITHUB_OUTPUT
+            | jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r >> $GITHUB_OUTPUT
             echo ""
             echo "EOF"
-            }
+            } >> $GITHUB_OUTPUT
 
       - name: Test final result
         run: |
