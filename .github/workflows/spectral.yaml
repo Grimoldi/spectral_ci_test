@@ -1,4 +1,4 @@
-name: Run Spectral on Pull Requests
+name: Run Spectral linting
 
 on:
     push:
@@ -20,9 +20,14 @@ jobs:
       # - uses: stoplightio/spectral-action@latest
 
       - name: Run Spectral Lint
+        id: spectral-lint
         uses: addnab/docker-run-action@v3
         with:
             image: stoplight/spectral:latest
             options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}
             run: spectral lint ./root.oas.yaml
             # --ruleset ./docs/spectral/bundled.spectral.yml ./docs/specification/*.yaml
+
+      - name: Add annotations
+        run: |
+            echo "${{ steps.spectral-lint.outputs }}"
