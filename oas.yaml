@@ -1,0 +1,22 @@
+openapi: 3.0.0
+
+info:
+  title: Datasourcers API
+  description: API that allows external datasources to be integrated with Ferrea.
+  version: 1.0.0
+  contact:
+    "name": "Eugenio Grimoldi"
+    "url": "https://github.com/Grimoldi/ferrea-datasources"
+
+paths: 
+  $ref: ./paths.yaml
+
+components:
+  responses: 
+    $ref: ./responses.yaml
+
+  schemas:
+    $ref: ./schemas.yaml
+
+tags: 
+  $ref: ./tags.yaml
