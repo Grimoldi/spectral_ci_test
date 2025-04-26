@@ -38,7 +38,7 @@ jobs:
           --attach stdout \
           stoplight/spectral:latest \
           lint ./root.oas.yaml) \
-          echo "$output"
+          && echo "$output" >> $GITHUB_OUTPUT
 
 
       - name: Add annotations
