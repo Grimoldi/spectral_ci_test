@@ -33,7 +33,8 @@ jobs:
         id: spectral-lint
         run: |
           docker run --rm \
-          -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} \
+          --volume ${{ github.workspace }}:${{ github.workspace }} \
+          --workdir ${{ github.workspace }} \
           stoplight/spectral:latest \
           lint './root.oas.yaml' >> $GITHUB_OUTPUT
 
