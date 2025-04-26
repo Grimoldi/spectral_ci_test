@@ -33,16 +33,16 @@ jobs:
         id: spectral-lint
         run: |
             # random EOF
-            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+            # EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             {
-                echo 'linting-result<<$EOF'
+                echo 'linting-result<<EOF'
                 echo -e "$(docker run --rm \
                 --volume ${{ github.workspace }}:${{ github.workspace }} \
                 --workdir ${{ github.workspace }} \
                 --attach stdout \
                 stoplight/spectral:latest \
                 lint ./root.oas.yaml)\n"
-                echo "$EOF"
+                echo "EOF"
             } >> $GITHUB_OUTPUT
 
       - name: Add annotations
