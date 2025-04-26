@@ -32,8 +32,6 @@ jobs:
       - name: Spectral Linting
         id: spectral-lint
         run: |
-            # random EOF
-            # EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             {
                 echo 'linting-result<<EOF'
                 echo -e "$(docker run --rm \
@@ -41,11 +39,18 @@ jobs:
                 --workdir ${{ github.workspace }} \
                 --attach stdout \
                 stoplight/spectral:latest \
-                lint ./root.oas.yaml)\n"
+                lint ./root.oas.yaml) --format json"
+                echo ""
                 echo "EOF"
             } >> $GITHUB_OUTPUT
 
-      - name: Add annotations
+      - name: Extract fields for annotations
+        id: extract-fields
         run: |
-            echo "${{ steps.spectral-lint.outputs.linting-result }}"
+            echo "${{ steps.spectral-lint.outputs.linting-result }}" \
+            jq '[.[] | {message: .message, file: .source, severity: .severity, code: .code}]' -r >> $GITHUB_OUTPUT
+
+      - name: Test final result
+        run: |
+          echo "${{ steps.spectral-lint.outputs.extract-fields }}"
             
