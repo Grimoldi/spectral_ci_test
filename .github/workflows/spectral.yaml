@@ -39,7 +39,7 @@ jobs:
                 --workdir ${{ github.workspace }} \
                 --attach stdout \
                 stoplight/spectral:latest \
-                lint ./root.oas.yaml) --format json"
+                lint ./root.oas.yaml --format json)"
                 echo ""
                 echo "EOF"
             } >> $GITHUB_OUTPUT
