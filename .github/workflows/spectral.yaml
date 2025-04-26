@@ -33,16 +33,15 @@ jobs:
     - name: Job summary          
       run: |
         ANNOTATIONS="${{ steps.spectral-lint.outputs.linting-result }}"
-        echo "$ANNOTATIONS"
         echo "$ANNOTATIONS" >> "$GITHUB_ENV"
 
-        WARNINGS=$(echo "$ANNOTATIONS" | grep warning | wc -l)
-        echo "$WARNINGS"
-        echo "$WARNINGS" >> "$GITHUB_ENV"
+        WARNNR=$(echo "$ANNOTATIONS" | grep warning | wc -l)
+        # echo "$WARNNR"
+        echo "$WARNNR" >> "$GITHUB_ENV"
 
-        ERRORS=$(echo "$ANNOTATIONS" | grep error | wc -l)
-        echo "$ERRORS"
-        echo "$ERRORS" >> "$GITHUB_ENV"
+        ERRNR=$(echo "$ANNOTATIONS" | grep error | wc -l)
+        # echo "$ERRNR"
+        echo "$ERRNR" >> "$GITHUB_ENV"
 
         ANNOTATIONLINES=$(echo "$ANNOTATIONS" | wc -l)
         if [ "$ANNOTATIONLINES" -eq 0 ]; then
@@ -50,24 +49,24 @@ jobs:
         else
             ICON=":red_circle:"
         fi
-        echo "$ICON"
+        # echo "$ICON"
         echo "$ICON" >> "$GITHUB_ENV"
 
         echo "### Spectral OAS analysis recap" >> $GITHUB_STEP_SUMMARY
-        echo "| Test result | Warning | Errors |" >> $GITHUB_STEP_SUMMARY
+        echo "| Test result | Warning | ERRNR |" >> $GITHUB_STEP_SUMMARY
         echo "| --- | --- | --- |" >> $GITHUB_STEP_SUMMARY
-        echo "| ${ICON} | ${WARNINGS} | ${ERRORS} |" >> $GITHUB_STEP_SUMMARY
+        # echo "| ${ICON} | ${WARNNR} | ${ERRNR} |" >> $GITHUB_STEP_SUMMARY
 
     - name: Action return code
       run: |
-        errors="${{ steps.spectral-lint.outputs.linting-result }}"
+        ERRNR="${{ steps.spectral-lint.outputs.linting-result }}"
 
-        if [ -z "$errors" ]; then
-        # empty array list, no errors, rc = 0
+        if [ -z "$ERRNR" ]; then
+        # empty array list, no ERRNR, rc = 0
         exit 0
         else
-        # there are errors/warnings
+        # there are ERRNR/WARNNR
         # echo them, so they can be annotated, and rc != 0
-        echo "$errors"
+        echo "$ERRNR"
         exit 1
         fi
