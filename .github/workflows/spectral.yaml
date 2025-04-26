@@ -32,7 +32,7 @@ jobs:
       - name: Spectral Linting
         id: spectral-lint
         run: |
-          echo -e "$(docker run --rm \
+          echo -e "linting-result=$(docker run --rm \
           --volume ${{ github.workspace }}:${{ github.workspace }} \
           --workdir ${{ github.workspace }} \
           --attach stdout \
@@ -43,5 +43,5 @@ jobs:
 
       - name: Add annotations
         run: |
-            echo "${{ steps.spectral-lint.outputs.* }}"
+            echo "${{ steps.spectral-lint.outputs.linting-result }}"
             
