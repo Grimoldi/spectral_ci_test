@@ -45,7 +45,7 @@ jobs:
         echo "$ERRORS" >> "$GITHUB_ENV"
 
         ANNOTATIONLINES=$(echo "$ANNOTATIONS" | wc -l)
-        if [ "ANNOTATIONLINES" -eq 0 ]; then
+        if [ "$ANNOTATIONLINES" -eq 0 ]; then
             ICON=":white_check_mark:"
         else
             ICON=":red_circle:"
