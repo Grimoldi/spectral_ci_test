@@ -41,7 +41,7 @@ jobs:
 
         ERRNR=$(echo "$ANNOTATIONS" | grep error | wc -l)
 
-        ANNOTATIONLINES=$(echo "$ANNOTATIONS" | grep -vE "^No results with a severity of .* found\!$" | wc -l)
+        ANNOTATIONLINES=$(echo "$ANNOTATIONS" | grep -vE "^No results with a severity of .* found\!$" | sed -r '/^\s*$/d' | wc -l)
         if [ "$ANNOTATIONLINES" -eq 0 ]; then
             ICON=":white_check_mark:"
         else
@@ -64,8 +64,8 @@ jobs:
             --attach stdout \
             stoplight/spectral:latest \
             lint ./root.oas.yaml --format stylish)" \
-            | sed 's/warning/:warning:/' \
-            | sed 's/error/:heavy_exclamation_mark:/'
+            | sed 's/ warning / :warning: /' \
+            | sed 's/ error / :heavy_exclamation_mark: /'
         } >> $GITHUB_STEP_SUMMARY
         
 
