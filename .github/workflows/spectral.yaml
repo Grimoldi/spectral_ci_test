@@ -48,6 +48,8 @@ jobs:
             ICON=":red_circle:"
         fi
 
+        echo "ANNOTATIONSLINES=$ANNOTATIONLINES" >> $GITHUB_ENV
+
         echo "### Spectral OAS analysis recap" >> $GITHUB_STEP_SUMMARY
         echo "| Test result | Warnings | Errors |" >> $GITHUB_STEP_SUMMARY
         echo "| --- | --- | --- |" >> $GITHUB_STEP_SUMMARY
@@ -69,7 +71,7 @@ jobs:
 
     - name: Action return code
       run: |
-        ERRNR="${{ steps.spectral-lint.outputs.linting-result }}"
+        ERRNR="${{ env.ANNOTATIONLINES }}"
 
         if [ -z "$ERRNR" ]; then
         # empty array list, no ERRNR, rc = 0
