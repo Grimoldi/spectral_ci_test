@@ -75,11 +75,11 @@ jobs:
       run: |
         ERRNR="${{ env.ATTENTIONLINES }}"
 
-        if [ -z "$ERRNR" ]; then
-        # empty array list, no ERRNR, rc = 0
+        if [ "$ERRNR" -eq 0 ]; then
+        # no point of attention, rc = 0
         exit 0
         else
-        # there are ERRNR/WARNNR
+        # there are warning(s)/error(s)
         # echo them, so they can be annotated, and rc != 0
         echo "$ERRNR"
         exit 1
