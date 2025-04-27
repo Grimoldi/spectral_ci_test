@@ -16,6 +16,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BookDatasource"
+            $ref: "../root.oas.yaml#/components/schemas/BookDatasource"
     "404":
-      $ref: "#/components/responses/NotFound"
+      $ref: "../root.oas.yaml#/components/responses/NotFound"
