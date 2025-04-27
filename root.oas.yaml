@@ -8,6 +8,10 @@ info:
     "name": "Eugenio Grimoldi"
     "url": "https://github.com/Grimoldi/ferrea-datasources"
 
+servers:
+  - url: https://ferrea.local
+    description: Development local server
+
 paths: 
   $ref: ./paths.yaml
 
@@ -19,4 +23,6 @@ components:
     $ref: ./schemas.yaml
 
 tags: 
-  $ref: ./tags.yaml
+  - name: book
+    description: Book related operations.
+
