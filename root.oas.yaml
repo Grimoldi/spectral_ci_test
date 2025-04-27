@@ -23,7 +23,7 @@ components:
     Error:
       $ref: "./schemas-error.yaml#/Error"
 
-  responses: 
+  responses:
     NotFound:
       $ref: "./responses-not-found.yaml#/NotFound"
 
