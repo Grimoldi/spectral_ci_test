@@ -42,15 +42,15 @@ jobs:
         WARNNR=$(echo "$ANNOTATIONS" | grep warning | wc -l)
         ERRNR=$(echo "$ANNOTATIONS" | grep error | wc -l)
         # error + warning basically
-        ANNOTATIONLINES=$(echo "$ANNOTATIONS" | wc -l)
+        ATTENTIONLINES=$(($WARNNR + $ERRNR)) 
 
-        if [ "$ANNOTATIONLINES" -eq 0 ]; then
+        if [ "$ATTENTIONLINES" -eq 0 ]; then
             ICON=":white_check_mark:"
         else
             ICON=":red_circle:"
         fi
 
-        echo "ANNOTATIONSLINES=$ANNOTATIONLINES" >> $GITHUB_ENV
+        echo "ATTENTIONLINES=$ATTENTIONLINES" >> $GITHUB_ENV
 
         echo "### Spectral OAS analysis recap" >> $GITHUB_STEP_SUMMARY
         echo "| Test result | Warnings | Errors |" >> $GITHUB_STEP_SUMMARY
@@ -73,7 +73,7 @@ jobs:
 
     - name: Action return code
       run: |
-        ERRNR="${{ env.ANNOTATIONLINES }}"
+        ERRNR="${{ env.ATTENTIONLINES }}"
 
         if [ -z "$ERRNR" ]; then
         # empty array list, no ERRNR, rc = 0
