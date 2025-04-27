@@ -18,10 +18,14 @@ paths:
 
 components:
   schemas:
-    $ref: ./schemas.yaml
-    
+    BookDatasource:
+      $ref: ./schemas-bookdatasource.yaml
+    Error:
+      $ref: ./schemas-error.yaml
+
   responses: 
-    $ref: ./responses.yaml
+    NotFound:
+      $ref: ./responses-not-found.yaml
 
 tags: 
   - name: book
