@@ -1,11 +1,12 @@
-type: object
-properties:
-  detail:
-    oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-required:
-  - detail
-additionalProperties: false
+Error:
+  type: object
+  properties:
+    detail:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            type: string
+  required:
+    - detail
+  additionalProperties: false

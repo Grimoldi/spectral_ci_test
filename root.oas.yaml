@@ -19,13 +19,13 @@ paths:
 components:
   schemas:
     BookDatasource:
-      $ref: "./schemas-bookdatasource.yaml"
+      $ref: "./schemas-bookdatasource.yaml#/BookDatasource"
     Error:
-      $ref: "./schemas-error.yaml"
+      $ref: "./schemas-error.yaml#/Error"
 
   responses: 
     NotFound:
-      $ref: "./responses-not-found.yaml"
+      $ref: "./responses-not-found.yaml#/NotFound"
 
 tags: 
   - name: book

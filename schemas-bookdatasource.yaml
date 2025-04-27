@@ -1,28 +1,29 @@
-type: object
-required:
-  - title
-  - author
-properties:
-  title:
-    type: string
-  author:
-    type: array
-    items:
+BookDatasource:
+  type: object
+  required:
+    - title
+    - author
+  properties:
+    title:
       type: string
-  publishing:
-    type: string
-  published_on:
-    type: integer
-    minimum: 1
-  cover:
-    type: string
-  plot:
-    type: string
-  language:
-    type: array
-    items:
+    author:
+      type: array
+      items:
+        type: string
+    publishing:
       type: string
-  book_format:
-    type: string
-  author_portrait:
-    type: string
+    published_on:
+      type: integer
+      minimum: 1
+    cover:
+      type: string
+    plot:
+      type: string
+    language:
+      type: array
+      items:
+        type: string
+    book_format:
+      type: string
+    author_portrait:
+      type: string
