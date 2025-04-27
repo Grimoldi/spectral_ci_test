@@ -14,18 +14,18 @@ servers:
 
 paths:
   /book/{isbn}:
-    $ref: ./paths.yaml
+    $ref: "./paths.yaml"
 
 components:
   schemas:
     BookDatasource:
-      $ref: ./schemas-bookdatasource.yaml
+      $ref: "./schemas-bookdatasource.yaml"
     Error:
-      $ref: ./schemas-error.yaml
+      $ref: "./schemas-error.yaml"
 
   responses: 
     NotFound:
-      $ref: ./responses-not-found.yaml
+      $ref: "./responses-not-found.yaml"
 
 tags: 
   - name: book
