@@ -14,7 +14,7 @@ servers:
 
 paths:
   /book/{isbn}:
-    $ref: "paths/paths.yaml"
+    $ref: "paths/paths.yaml#/GetBook"
 
 components:
   schemas:

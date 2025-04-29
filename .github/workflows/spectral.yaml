@@ -5,11 +5,15 @@ on:
       branches:
         - main
       paths:
-        - "*.yaml"
+        - "oas/*.yaml"
         - ".github/workflows/spectral.yaml"
 
 permissions:
   checks: write
+
+env:
+  OAS_PATH: ./oas/root.oas.yaml
+  SPECTRAL_IMAGE: "stoplight/spectral:6"
 
 jobs:
   build:
@@ -27,8 +31,8 @@ jobs:
               --volume ${{ github.workspace }}:${{ github.workspace }} \
               --workdir ${{ github.workspace }} \
               --attach stdout \
-              stoplight/spectral:latest \
-              lint ./root.oas.yaml --format github-actions)"
+              $SPECTRAL_IMAGE \
+              lint $OAS_PATH --format github-actions)"
               echo ""
               echo "EOF"
           } >> $GITHUB_OUTPUT
@@ -64,8 +68,8 @@ jobs:
             --volume ${{ github.workspace }}:/oas-docs \
             --workdir /oas-docs \
             --attach stdout \
-            stoplight/spectral:latest \
-            lint ./root.oas.yaml --format stylish)" \
+            $SPECTRAL_IMAGE \
+            lint $OAS_PATH --format stylish)" \
             | sed 's/ warning / :warning: /' \
             | sed 's/ error / :heavy_exclamation_mark: /'
         } >> $GITHUB_STEP_SUMMARY
