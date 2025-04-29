@@ -1,4 +1,4 @@
-name: Run Spectral linting
+name: Run Redocly linting
 description: |
   # OpenApi definition automatic update and validation.
   Create a bundle file (using a redocly), than proceed to validate it against linting.
@@ -66,22 +66,19 @@ jobs:
 
     - name: Job summary
       id: markdown-summary
-      if: success() || steps.linting.conclusion == 'failure'
+      if: success() || steps.linting.outcome == 'failure'
       run: |
         {
-              echo 'linting-result<<EOF'
               echo -e "$(docker run --rm \
               --volume ${{ github.workspace }}:${{ github.workspace }} \
               --workdir ${{ github.workspace }} \
               --attach stdout \
               $REDOCLY_IMAGE \
               lint $OAS_PATH --format markdown)"
-              echo ""
-              echo "EOF"
           } >> $GITHUB_STEP_SUMMARY
 
     - name: Commit changed bundle file if updated
-      if: steps.bundling.conclusion == 'success'
+      if: steps.bundling.outcome == 'success'
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: 'Added or updated the bundle.yaml oas definition.'
