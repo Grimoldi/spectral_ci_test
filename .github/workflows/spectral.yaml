@@ -43,7 +43,7 @@ jobs:
               --workdir ${{ github.workspace }} \
               --attach stdout \
               $REDOCLY_IMAGE \
-              bundle *.yaml --output $OAS_PATH)"
+              bundle ./oas/*.yaml --output $OAS_PATH )"
               echo ""
               echo "EOF"
           } >> $GITHUB_OUTPUT
