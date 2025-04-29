@@ -30,7 +30,7 @@ jobs:
   build:
     name: Redocly linting
     runs-on: ubuntu-latest
-    continue-on-error: true
+    # continue-on-error: true
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
