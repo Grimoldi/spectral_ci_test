@@ -23,15 +23,12 @@ permissions:
 
 env:
   OAS_PATH: ./oas/bundle.yaml
-  SPECTRAL_IMAGE: "stoplight/spectral:6"
-  REDOCLY_IMAGE: "redocly/cli:1.34.3"
   REDOCLY_VERSION: "redocly/cli@1.34.3"
 
 jobs:
   build:
     name: Redocly linting
     runs-on: ubuntu-latest
-    # continue-on-error: true
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
