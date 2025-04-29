@@ -37,7 +37,7 @@ def get_all_yaml_files(
     blacklist_bundle_file: str = BUNDLE_FILENAME,
 ) -> list[Path]:
     """Given a path, find all yaml files (apart from the blacklist one)."""
-    oas_definitions = list()
+    oas_definitions = set()
     for root, _, files in os.walk(path):
         for file in files:
             if not file.endswith(".yaml") or file.startswith("."):
@@ -50,9 +50,9 @@ def get_all_yaml_files(
                 continue
 
             module_path = os.path.join(root, file)
-            oas_definitions.append(Path(module_path))
+            oas_definitions.add(Path(module_path))
 
-    return oas_definitions
+    return sorted(oas_definitions)
 
 
 def export_definition(data: dict[str, Any], output_file: Path = BUNDLE_FILE) -> None:
