@@ -1,4 +1,11 @@
 name: Run Spectral linting
+description: |
+  # OpenApi definition automatic update and validation.
+  Create a bundle file (using a custom python script), than proceed to validate it against Spectral.
+  The bundle file will then be used from the web server.
+  In case of creation/update of the bundle file, autocommit it.
+
+  Run only if anything has been changed under the definitions or on this file itself.
 
 on:
     push:
@@ -16,17 +23,19 @@ permissions:
 
 env:
   PYTHON_OAS_BUNDLING: "./oas/bundling.py"
-  OAS_PATH: ./oas/root.oas.yaml
+  OAS_PATH: ./oas/bundle.yaml
   SPECTRAL_IMAGE: "stoplight/spectral:6"
 
 jobs:
   build:
-    name: Run Spectral
+    name: Spectral linting
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
         
-    - uses: actions/setup-python@v5
+    - name: Setup python
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
 
@@ -112,6 +121,7 @@ jobs:
         exit 1
         fi
 
-    - uses: stefanzweifel/git-auto-commit-action@v5
+    - name: Commit changed bundle file if updated
+      uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: 'Added or updated the bundle.yaml oas definition.'
