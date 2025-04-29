@@ -12,6 +12,7 @@ permissions:
   checks: write
 
 env:
+  PYTHON_OAS_BUNDLING: "./oas/bundling.py"
   OAS_PATH: ./oas/root.oas.yaml
   SPECTRAL_IMAGE: "stoplight/spectral:6"
 
@@ -21,6 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+        
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: OAS Bundling
+      run: |
+        python $PYTHON_OAS_BUNDLING
 
     - name: Spectral Linting
       id: spectral-lint
@@ -88,3 +97,7 @@ jobs:
         echo "$ERRNR"
         exit 1
         fi
+
+    - uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 'Added or updated the bundle.yaml oas definition.'
