@@ -1,0 +1,121 @@
+name: Run Spectral linting
+description: |
+  # OpenApi definition automatic update and validation.
+  Create a bundle file (using a redocly), than proceed to validate it against Spectral.
+  The bundle file will then be used from the web server.
+  In case of creation/update of the bundle file, autocommit it.
+
+  Run only if anything has been changed under the definitions or on this file itself.
+
+on:
+    push:
+      branches:
+        - main
+      paths:
+        # - "oas/*.yaml"
+        - ".github/workflows/spectral.yaml"
+
+permissions:
+  checks: write
+  # Give the default GITHUB_TOKEN write permission to commit and push the
+  # added or changed files to the repository.
+  contents: write
+
+env:
+  OAS_PATH: ./oas/bundle.yaml
+  SPECTRAL_IMAGE: "stoplight/spectral:6"
+  REDOCLY_IMAGE: "redocly/cli:1.34.3"
+
+jobs:
+  build:
+    name: Spectral linting
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: OAS Bundling
+      run: |
+        {
+              echo 'bundling-result<<EOF'
+              echo -e "$(docker run --rm \
+              --volume ${{ github.workspace }}:${{ github.workspace }} \
+              --workdir ${{ github.workspace }} \
+              --attach stdout \
+              $REDOCLY_IMAGE \
+              bundle ./oas/*.yaml --output $OAS_PATH )"
+              echo ""
+              echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+    - name: Spectral Linting
+      id: spectral-lint
+      run: |
+          {
+              echo 'linting-result<<EOF'
+              echo -e "$(docker run --rm \
+              --volume ${{ github.workspace }}:${{ github.workspace }} \
+              --workdir ${{ github.workspace }} \
+              --attach stdout \
+              $SPECTRAL_IMAGE \
+              lint $OAS_PATH --format github-actions)"
+              echo ""
+              echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+    - name: Job summary          
+      run: |
+        ANNOTATIONS="${{ steps.spectral-lint.outputs.linting-result }}"
+        # clean output removing trailing new line and removing message in case all went fine.
+        ANNOTATIONS=$(echo "$ANNOTATIONS" | grep -vE "^No results with a severity of .* found\!$" | sed -r '/^\s*$/d')
+
+        WARNNR=$(echo "$ANNOTATIONS" | grep warning | wc -l)
+        ERRNR=$(echo "$ANNOTATIONS" | grep error | wc -l)
+        # error + warning basically
+        ATTENTIONLINES=$(($WARNNR + $ERRNR)) 
+
+        if [ "$ATTENTIONLINES" -eq 0 ]; then
+            ICON=":white_check_mark:"
+        else
+            ICON=":red_circle:"
+        fi
+
+        echo "ATTENTIONLINES=$ATTENTIONLINES" >> $GITHUB_ENV
+
+        echo "### Spectral OAS analysis recap" >> $GITHUB_STEP_SUMMARY
+        echo "| Test result | Warnings | Errors |" >> $GITHUB_STEP_SUMMARY
+        echo "| --- | --- | --- |" >> $GITHUB_STEP_SUMMARY
+        echo "| ${ICON} | ${WARNNR} | ${ERRNR} |" >> $GITHUB_STEP_SUMMARY
+
+    - name: Stylish job summary
+      run: |
+        {
+            echo -e "$(docker run --rm \
+            --volume ${{ github.workspace }}:/oas-docs \
+            --workdir /oas-docs \
+            --attach stdout \
+            $SPECTRAL_IMAGE \
+            lint $OAS_PATH --format stylish)" \
+            | sed 's/ warning / :warning: /' \
+            | sed 's/ error / :heavy_exclamation_mark: /'
+        } >> $GITHUB_STEP_SUMMARY
+        
+
+    - name: Action return code
+      run: |
+        ERRNR="${{ env.ATTENTIONLINES }}"
+
+        if [ "$ERRNR" -eq 0 ]; then
+        # no point of attention, rc = 0
+        exit 0
+        else
+        # there are warning(s)/error(s)
+        # echo them, so they can be annotated, and rc != 0
+        echo "$ERRNR"
+        exit 1
+        fi
+
+    - name: Commit changed bundle file if updated
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 'Added or updated the bundle.yaml oas definition.'
