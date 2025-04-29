@@ -50,7 +50,7 @@ jobs:
       run: redocly bundle ./oas/*.yaml --output $OAS_PATH
 
     - name: Run linting
-      run: redocly lint openapi.yaml --format=markdown >> $GITHUB_STEP_SUMMARY
+      run: redocly lint $OAS_PATH --format=markdown >> $GITHUB_STEP_SUMMARY
 
     - name: Commit changed bundle file if updated
       uses: stefanzweifel/git-auto-commit-action@v5
