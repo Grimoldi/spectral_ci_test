@@ -25,6 +25,7 @@ env:
   OAS_PATH: ./oas/bundle.yaml
   SPECTRAL_IMAGE: "stoplight/spectral:6"
   REDOCLY_IMAGE: "redocly/cli:1.34.3"
+  REDOCLY_VERSION: "redocly/cli@1.34.3"
 
 jobs:
   build:
@@ -35,49 +36,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: OAS Bundling
-      id: bundling
-      run: |
-        {
-              echo 'bundling-result<<EOF'
-              echo -e "$(docker run --rm \
-              --volume ${{ github.workspace }}:${{ github.workspace }} \
-              --workdir ${{ github.workspace }} \
-              --attach stdout \
-              $REDOCLY_IMAGE \
-              bundle ./oas/*.yaml --output $OAS_PATH )"
-              echo ""
-              echo "EOF"
-          } >> $GITHUB_OUTPUT
+    - name: Set up node
+      uses: actions/setup-node@v4
 
-    - name: Linting
-      id: linting
-      run: |
-          {
-              echo 'linting-result<<EOF'
-              echo -e "$(docker run --rm \
-              --volume ${{ github.workspace }}:${{ github.workspace }} \
-              --workdir ${{ github.workspace }} \
-              --attach stdout \
-              $REDOCLY_IMAGE \
-              lint $OAS_PATH --format github-actions)"
-              echo ""
-              echo "EOF"
-          } >> $GITHUB_OUTPUT
+    - name: Install Redocly CLI
+      run: npm install -g @$REDOCLY_VERSION
 
-    - name: Job summary
-      id: markdown-summary
-      run: |
-        {
-              echo -e "$(docker run --rm \
-              --volume ${{ github.workspace }}:${{ github.workspace }} \
-              --workdir ${{ github.workspace }} \
-              --attach stdout \
-              $REDOCLY_IMAGE \
-              lint $OAS_PATH --format markdown)"
-          } >> $GITHUB_STEP_SUMMARY
+    - name: Run bundling
+      id: bundle
+      run: redocly bundle ./oas/*.yaml --output $OAS_PATH
+
+    - name: Run linting
+      run: redocly lint openapi.yaml --format=markdown >> $GITHUB_STEP_SUMMARY
 
     - name: Commit changed bundle file if updated
       uses: stefanzweifel/git-auto-commit-action@v5
+      if: steps.bundle.outcome == 'success'
       with:
         commit_message: 'Added or updated the bundle.yaml oas definition.'
