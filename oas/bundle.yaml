@@ -6,6 +6,9 @@ info:
   contact:
     name: Eugenio Grimoldi
     url: https://github.com/Grimoldi/ferrea-datasources
+  license:
+    name: MIT licence
+    url: https://mit-license.org/
 servers:
   - url: https://ferrea.local
     description: Development local server
@@ -22,9 +25,10 @@ paths:
           type: string
     get:
       description: Search data externally for a single book.
+      security: []
+      summary: Returns the data found on the external datasources for a specific book, idetified by its ISBN.
       tags:
         - book
-      summary: Returns the data found on the external datasources for a specific book, idetified by its ISBN.
       operationId: getBookDatasource
       responses:
         '200':
