@@ -7,6 +7,9 @@ info:
   contact:
     "name": "Eugenio Grimoldi"
     "url": "https://github.com/Grimoldi/ferrea-datasources"
+  licence:
+    name: MIT licence
+    identifier: MIT
 
 servers:
   - url: https://ferrea.local
