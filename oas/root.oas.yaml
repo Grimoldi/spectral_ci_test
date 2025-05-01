@@ -9,7 +9,7 @@ info:
     "url": "https://github.com/Grimoldi/ferrea-datasources"
   license:
     name: MIT licence
-    identifier: MIT
+    url: https://mit-license.org/
 
 servers:
   - url: https://ferrea.local
